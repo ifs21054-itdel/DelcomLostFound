@@ -9,21 +9,21 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ifs21054.delcomlostfound.R
-import com.ifs21054.delcomlostfound.data.model.DelcomLostfound
+import com.ifs21054.delcomlostfound.data.model.DelcomLostFound
 import com.ifs21054.delcomlostfound.data.remote.MyResult
-import com.ifs21054.delcomlostfound.databinding.ActivityLostfoundManageBinding
+import com.ifs21054.delcomlostfound.databinding.ActivityLostFoundManageBinding
 import com.ifs21054.delcomlostfound.helper.Utils.Companion.observeOnce
 import com.ifs21054.delcomlostfound.presentation.ViewModelFactory
 
 class LostFoundManageActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLostfoundManageBinding
+    private lateinit var binding: ActivityLostFoundManageBinding
     private val viewModel by viewModels<LostFoundViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLostfoundManageBinding.inflate(layoutInflater)
+        binding = ActivityLostFoundManageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupView()
@@ -48,8 +48,8 @@ class LostFoundManageActivity : AppCompatActivity() {
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             val selectedImageUri = result.data?.data
-            // Melakukan sesuatu dengan URI gambar yang dipilih
-            // Seperti, tampilkan gambar tersebut di ImageView
+            // Lakukan sesuatu dengan URI gambar yang dipilih
+            // Misalnya, tampilkan gambar tersebut di ImageView
             binding.ivSelectedImage.setImageURI(selectedImageUri)
         }
     }
@@ -62,12 +62,12 @@ class LostFoundManageActivity : AppCompatActivity() {
 
             val delcomLostFound = when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                    intent.getParcelableExtra(KEY_LOSTFOUND, DelcomLostfound::class.java)
+                    intent.getParcelableExtra(KEY_LOSTFOUND, DelcomLostFound::class.java)
                 }
 
                 else -> {
                     @Suppress("DEPRECATION")
-                    intent.getParcelableExtra<DelcomLostfound>(KEY_LOSTFOUND)
+                    intent.getParcelableExtra<DelcomLostFound>(KEY_LOSTFOUND)
                 }
             }
 
@@ -86,7 +86,7 @@ class LostFoundManageActivity : AppCompatActivity() {
 
     private fun manageAddLostFound() {
         binding.apply {
-            appbarLostFoundManage.title = "Tambah Barang"
+            appbarLostFoundManage.title = "Tambah Barang Temuan"
 
             btnLostFoundManageSave.setOnClickListener {
                 val title = etLostFoundManageTitle.text.toString()
@@ -139,9 +139,9 @@ class LostFoundManageActivity : AppCompatActivity() {
     }
 
 
-    private fun manageEditLostFound(lostfound: DelcomLostfound) {
+    private fun manageEditLostFound(lostfound: DelcomLostFound) {
         binding.apply {
-            appbarLostFoundManage.title = "Ubah Barang"
+            appbarLostFoundManage.title = "Ubah Barang Temuan"
 
             etLostFoundManageTitle.setText(lostfound.title)
             etLostFoundManageDesc.setText(lostfound.description)
@@ -166,7 +166,7 @@ class LostFoundManageActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                observePutLostFound(lostfound.id, title, description, status, lostfound.isCompleted)
+                observePutLostFound(lostfound.id, title, description, status, lostfound.iscompleted)
             }
         }
     }

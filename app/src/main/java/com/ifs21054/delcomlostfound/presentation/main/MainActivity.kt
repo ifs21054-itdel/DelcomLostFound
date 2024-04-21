@@ -2,7 +2,7 @@ package com.ifs21054.delcomlostfound.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
@@ -22,6 +22,7 @@ import com.ifs21054.delcomlostfound.helper.Utils.Companion.observeOnce
 import com.ifs21054.delcomlostfound.presentation.ViewModelFactory
 import com.ifs21054.delcomlostfound.presentation.login.LoginActivity
 import com.ifs21054.delcomlostfound.presentation.lostfound.LostFoundDetailActivity
+import com.ifs21054.delcomlostfound.presentation.lostfound.LostFoundFavoriteActivity
 import com.ifs21054.delcomlostfound.presentation.lostfound.LostFoundManageActivity
 import com.ifs21054.delcomlostfound.presentation.profile.ProfileActivity
 
@@ -61,11 +62,6 @@ class MainActivity : AppCompatActivity() {
         setupAction()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu) // Sesuaikan dengan nama file XML menu Anda
-        return true
-    }
-
     private fun setupView() {
         showComponentNotEmpty(false)
         showEmptyError(false)
@@ -92,20 +88,25 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.mainMenuSemuaData -> {
-                    // Saat menu "All Data" diklik, panggil fungsi getLostFounds()
+                R.id.mainMenuAllData -> {
+                    // Ketika menu "All Data" diklik, panggil fungsi getLostandFounds()
                     observeGetLostFounds()
                     true
                 }
-                R.id.mainMenuDataSaya -> {
-                    // Saat menu "My Data" diklik, panggil fungsi getLostFound()
+                R.id.mainMenuMyData -> {
+                    // Ketika menu "My Data" diklik, panggil fungsi getLostandFound()
                     observeGetMyLostFounds()
                     true
                 }
+
+                R.id.mainMenuFavoriteTodos -> {
+                    openFavoriteLostFoundActivity()
+                    true
+                }
+
                 else -> false
             }
         }
-
 
         binding.fabMainAddLostFound.setOnClickListener {
             openAddLostFoundActivity()
@@ -142,7 +143,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun observeGetMyLostFounds() {
+        // Panggil fungsi getLostandFounds() dengan menyertakan nilai isMe
+        viewModel.getLostFound().observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is MyResult.Loading -> {
+                        showLoading(true)
+                    }
+                    is MyResult.Success -> {
+                        showLoading(false)
+                        loadLostFoundsToLayout(result.data)
+                    }
+                    is MyResult.Error -> {
+                        showLoading(false)
+                        showEmptyError(true)
+                    }
+                }
+            }
+        }
+    }
+
     private fun loadLostFoundsToLayout(response: DelcomLostFoundsResponse) {
+        if (response == null) {
+            // Handle null case appropriately, misalnya menampilkan pesan error atau melakukan tindakan lainnya
+            Log.e("MainActivity", "response == null")
+            return
+        } else if (response.data == null){
+            Log.e("MainActivity", "response.data == null")
+            return
+        } else if (response.data.lostFounds == null){
+            Log.e("MainActivity", "response.data.lostfounds == null")
+            return
+        }
+
         val lostfounds = response.data.lostFounds
         val layoutManager = LinearLayoutManager(this)
         binding.rvMainLostFounds.layoutManager = layoutManager
@@ -173,8 +207,8 @@ class MainActivity : AppCompatActivity() {
                         lostfound.id,
                         lostfound.title,
                         lostfound.description,
-                        isCompleted,
-                        lostfound.status
+                        lostfound.status,
+                        isCompleted
                     ).observeOnce {
                         when (it) {
                             is MyResult.Error -> {
@@ -239,27 +273,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeGetMyLostFounds() {
-        // Panggil fungsi getLostFound() dengan menyertakan nilai isMe
-        viewModel.getLostFound().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is MyResult.Loading -> {
-                        showLoading(true)
-                    }
-                    is MyResult.Success -> {
-                        showLoading(false)
-                        loadLostFoundsToLayout(result.data)
-                    }
-                    is MyResult.Error -> {
-                        showLoading(false)
-                        showEmptyError(true)
-                    }
-                }
-            }
-        }
-    }
-
     private fun showLoading(isLoading: Boolean) {
         binding.pbMain.visibility =
             if (isLoading) View.VISIBLE else View.GONE
@@ -297,6 +310,14 @@ class MainActivity : AppCompatActivity() {
             LostFoundManageActivity::class.java
         )
         intent.putExtra(LostFoundManageActivity.KEY_IS_ADD, true)
+        launcher.launch(intent)
+    }
+
+    private fun openFavoriteLostFoundActivity() {
+        val intent = Intent(
+            this@MainActivity,
+            LostFoundFavoriteActivity::class.java
+        )
         launcher.launch(intent)
     }
 }

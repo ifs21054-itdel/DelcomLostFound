@@ -28,29 +28,30 @@ class MainViewModel(
         }
     }
 
-    fun getLostFounds(): LiveData<MyResult<DelcomLostFoundsResponse>> {
-        return lostfoundRepository.getLostFounds(null,0,null).asLiveData()
-    }
-
     fun getLostFound(): LiveData<MyResult<DelcomLostFoundsResponse>> {
         return lostfoundRepository.getLostFounds(null, 1, null).asLiveData()
     }
 
+    fun getLostFounds(): LiveData<MyResult<DelcomLostFoundsResponse>> {
+        return lostfoundRepository.getLostFounds(null,0,null).asLiveData()
+    }
+
     fun putLostFound(
-        lostfoundId: Int,
+        lostandfoundId: Int,
         title: String,
         description: String,
+        status: String,
         isCompleted: Boolean,
-        status: String
     ): LiveData<MyResult<DelcomResponse>> {
         return lostfoundRepository.putLostFound(
-            lostfoundId,
+            lostandfoundId,
             title,
             description,
+            status,
             isCompleted,
-            status
-        )
+        ).asLiveData()
     }
+
 
 
     companion object {

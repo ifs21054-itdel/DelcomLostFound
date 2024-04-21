@@ -11,12 +11,16 @@
             android:title="Logout"
             app:showAsAction="never" />
         <item
-            android:id="@+id/mainMenuSemuaData"
+            android:id="@+id/mainMenuAllData"
             android:title="All Data"
             app:showAsAction="never" />
         <item
-            android:id="@+id/mainMenuDataSaya"
+            android:id="@+id/mainMenuMyData"
             android:title="My Data"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/mainMenuFavoriteTodos"
+            android:title="Favorite Item"
             app:showAsAction="never" />
     </group>
 </menu>

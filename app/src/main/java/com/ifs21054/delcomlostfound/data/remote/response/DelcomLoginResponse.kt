@@ -43,4 +43,3 @@ data class DataLoginResponse(
 	@field:SerializedName("token")
 	val token: String
 )
-

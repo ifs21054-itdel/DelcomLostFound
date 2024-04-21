@@ -5,16 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".presentation.lostfound.LostFoundManageActivity">
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarLayoutLostFoundManage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:visibility="visible">
-
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/appbarLostFoundManage"
             android:layout_width="match_parent"
@@ -22,7 +19,7 @@
             android:background="@color/ungu"
             app:navigationIcon="@drawable/ic_arrow_back_24"
             app:navigationIconTint="@color/white"
-            app:title="Tambah Barang"
+            app:title="Tambah Barang Temuan"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -56,36 +53,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etLostFoundManageTitle" />
 
-
-            <ImageView
-                android:id="@+id/ivSelectedImage"
-                android:layout_width="190sp"
-                android:layout_height="120sp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etLostFoundManageDesc"
-                tools:srcCompat="@drawable/noimage" />
-
-
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="2dp"
                 android:text="Status"
+                app:layout_constraintBottom_toTopOf="@+id/etLostFoundManageStatus"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnLostFoundImage" />
+                app:layout_constraintTop_toBottomOf="@+id/etLostFoundManageDesc" />
 
             <Spinner
                 android:id="@+id/etLostFoundManageStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
                 android:entries="@array/status"
                 android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <ImageView
+                android:id="@+id/ivSelectedImage"
+                android:layout_width="wrap_content"
+                android:layout_height="200sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etLostFoundManageStatus"
+                tools:srcCompat="@drawable/lostfound" />
 
             <Button
                 android:id="@+id/btnLostFoundImage"
@@ -128,16 +124,17 @@
 
             <Button
                 android:id="@+id/btnLostFoundManageSave"
-                android:layout_width="382dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:text="Simpan"
-                android:backgroundTint="@color/ungu"
                 android:textSize="14sp"
+                android:backgroundTint="@color/ungu"
                 app:cornerRadius="2pt"
-                app:layout_constraintTop_toBottomOf="@+id/etLostFoundManageStatus"
-                tools:layout_editor_absoluteX="0dp"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnLostFoundImage" />
 
             <ProgressBar
                 android:id="@+id/pbLostFoundManage"

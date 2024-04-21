@@ -4,11 +4,11 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class DelcomLostfound (
+data class DelcomLostFound (
     val id: Int,
     val title: String,
     val description: String,
     val status: String,
-    val isCompleted: Boolean,
+    val iscompleted: Boolean,
     val cover: String?,
 ) : Parcelable

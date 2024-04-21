@@ -19,3 +19,4 @@ data class DataAddLostFoundResponse(
 	@field:SerializedName("lost_found_id")
 	val lostFoundId: Int
 )
+

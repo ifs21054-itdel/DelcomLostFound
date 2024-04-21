@@ -61,7 +61,7 @@ class LostFoundsAdapter :
                 cbItemLostFoundIsFinished.isChecked = data.isCompleted == 1
 
                 val statusText = if (data.status.equals("found", ignoreCase = true)) {
-                    highlightText("Found", Color.BLUE)
+                    highlightText("Found", Color.GREEN)
                 } else {
                     highlightText("Lost", Color.RED)
                 }
