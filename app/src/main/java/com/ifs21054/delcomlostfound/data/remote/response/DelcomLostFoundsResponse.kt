@@ -3,7 +3,6 @@ package com.ifs21054.delcomlostfound.data.remote.response
 import com.google.gson.annotations.SerializedName
 
 data class DelcomLostFoundsResponse(
-
 	@field:SerializedName("data")
 	val data: DataLostFoundsResponse,
 
@@ -15,18 +14,11 @@ data class DelcomLostFoundsResponse(
 )
 
 data class LostFoundsItemResponse(
-
 	@field:SerializedName("cover")
-	val cover: String,
+	val cover: String?,
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String,
-
-	@field:SerializedName("user_id")
-	val userId: Int,
-
-	@field:SerializedName("author")
-	val author: AuthorLostFoundsResponse,
 
 	@field:SerializedName("description")
 	val description: String,
@@ -40,24 +32,17 @@ data class LostFoundsItemResponse(
 	@field:SerializedName("title")
 	val title: String,
 
+	@field:SerializedName("status")
+	val status: String,
+
 	@field:SerializedName("is_completed")
 	var isCompleted: Int,
 
-	@field:SerializedName("status")
-	var status: String
-)
-
-data class AuthorLostFoundsResponse(
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("photo")
-	val photo: Any
+	@field:SerializedName("is_me")
+	var isMe: Int
 )
 
 data class DataLostFoundsResponse(
-
 	@field:SerializedName("lost_founds")
-	val lostFounds: List<LostFoundsItemResponse>
+	val lostfounds: List<LostFoundsItemResponse>
 )

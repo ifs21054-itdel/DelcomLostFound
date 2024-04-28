@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ifs21054.delcomlostfound.data.remote.response.LostFoundsItemResponse
 import com.ifs21054.delcomlostfound.databinding.ItemRowLostfoundBinding
 
+
 class LostFoundsAdapter :
-    ListAdapter<LostFoundsItemResponse, LostFoundsAdapter.MyViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<LostFoundsItemResponse,
+            LostFoundsAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
     private var originalData = mutableListOf<LostFoundsItemResponse>()
@@ -59,14 +62,20 @@ class LostFoundsAdapter :
             binding.apply {
                 tvItemLostFoundTitle.text = data.title
                 cbItemLostFoundIsFinished.isChecked = data.isCompleted == 1
-
                 val statusText = if (data.status.equals("found", ignoreCase = true)) {
+                    // Jika status "found", maka gunakan warna hijau
                     highlightText("Found", Color.GREEN)
                 } else {
-                    highlightText("Lost", Color.RED)
+                    // Jika status "lost", maka gunakan warna kuning
+                    highlightText("Lost", Color.YELLOW)
                 }
                 // Menetapkan teks status yang sudah disorot ke TextView
-                tvLostFoundDetailStatus.text = statusText
+                tvStatus.text = statusText
+                data.cover?.let { coverUrl ->
+                    Glide.with(itemView)
+                        .load(coverUrl)
+                        .into(ivLostFoundItem)
+                }
             }
         }
 
@@ -98,8 +107,8 @@ class LostFoundsAdapter :
     }
 
     interface OnItemClickCallback {
-        fun onCheckedChangeListener(lostfound: LostFoundsItemResponse, isChecked: Boolean)
-        fun onClickDetailListener(lostfoundId: Int)
+        fun onCheckedChangeListener(todo: LostFoundsItemResponse, isChecked: Boolean)
+        fun onClickDetailListener(todoId: Int)
     }
 
     companion object {

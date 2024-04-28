@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class DelcomLostFound (
+data class LostFound (
     val id: Int,
     val title: String,
     val description: String,
@@ -12,3 +12,4 @@ data class DelcomLostFound (
     val iscompleted: Boolean,
     val cover: String?,
 ) : Parcelable
+

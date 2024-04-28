@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             ContextCompat
                 .getDrawable(this, R.drawable.ic_more_vert_24)
 
-        observeGetLostFounds()
+        observeGetAll()
     }
 
     private fun setupAction() {
@@ -88,14 +88,13 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.mainMenuAllData -> {
-                    // Ketika menu "All Data" diklik, panggil fungsi getLostandFounds()
-                    observeGetLostFounds()
+                R.id.mainMenuMyData -> {
+                    observeGetMine()
                     true
                 }
-                R.id.mainMenuMyData -> {
-                    // Ketika menu "My Data" diklik, panggil fungsi getLostandFound()
-                    observeGetMyLostFounds()
+
+                R.id.mainMenuAllData-> {
+                    observeGetAll()
                     true
                 }
 
@@ -103,12 +102,11 @@ class MainActivity : AppCompatActivity() {
                     openFavoriteLostFoundActivity()
                     true
                 }
-
                 else -> false
             }
         }
 
-        binding.fabMainAddLostFound.setOnClickListener {
+        binding.fabMainAddTodo.setOnClickListener {
             openAddLostFoundActivity()
         }
 
@@ -116,13 +114,13 @@ class MainActivity : AppCompatActivity() {
             if (!user.isLogin) {
                 openLoginActivity()
             } else {
-                observeGetLostFounds()
+                // load-todos
             }
         }
     }
 
-    private fun observeGetLostFounds() {
-        viewModel.getLostFounds().observe(this) { result ->
+    private fun observeGetMine() {
+        viewModel.getTodos().observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is MyResult.Loading -> {
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 
                     is MyResult.Success -> {
                         showLoading(false)
-                        loadLostFoundsToLayout(result.data)
+                        loadAllToLayout(result.data)
                     }
 
                     is MyResult.Error -> {
@@ -143,18 +141,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeGetMyLostFounds() {
-        // Panggil fungsi getLostandFounds() dengan menyertakan nilai isMe
-        viewModel.getLostFound().observe(this) { result ->
+    private fun observeGetAll() {
+        viewModel.getAllTodos().observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is MyResult.Loading -> {
                         showLoading(true)
                     }
+
                     is MyResult.Success -> {
                         showLoading(false)
-                        loadLostFoundsToLayout(result.data)
+                        loadAllToLayout(result.data)
                     }
+
                     is MyResult.Error -> {
                         showLoading(false)
                         showEmptyError(true)
@@ -164,7 +163,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadLostFoundsToLayout(response: DelcomLostFoundsResponse) {
+    private fun loadAllToLayout(response: DelcomLostFoundsResponse) {
+        // Periksa apakah response atau data pada response null
         if (response == null) {
             // Handle null case appropriately, misalnya menampilkan pesan error atau melakukan tindakan lainnya
             Log.e("MainActivity", "response == null")
@@ -172,72 +172,73 @@ class MainActivity : AppCompatActivity() {
         } else if (response.data == null){
             Log.e("MainActivity", "response.data == null")
             return
-        } else if (response.data.lostFounds == null){
-            Log.e("MainActivity", "response.data.lostfounds == null")
+        } else if (response.data.lostfounds == null){
+            Log.e("MainActivity", "response.data.todos == null")
             return
         }
 
-        val lostfounds = response.data.lostFounds
+        // Lanjutkan dengan pemrosesan data
+        val todos = response.data.lostfounds
         val layoutManager = LinearLayoutManager(this)
-        binding.rvMainLostFounds.layoutManager = layoutManager
+        binding.rvMainTodos.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(
             this,
             layoutManager.orientation
         )
-        binding.rvMainLostFounds.addItemDecoration(itemDecoration)
+        binding.rvMainTodos.addItemDecoration(itemDecoration)
 
-        if (lostfounds.isEmpty()) {
+        if (todos.isEmpty()) {
             showEmptyError(true)
-            binding.rvMainLostFounds.adapter = null
+            binding.rvMainTodos.adapter = null
         } else {
             showComponentNotEmpty(true)
             showEmptyError(false)
 
             val adapter = LostFoundsAdapter()
-            adapter.submitOriginalList(lostfounds)
-            binding.rvMainLostFounds.adapter = adapter
+            adapter.submitOriginalList(todos)
+            binding.rvMainTodos.adapter = adapter
             adapter.setOnItemClickCallback(object : LostFoundsAdapter.OnItemClickCallback {
                 override fun onCheckedChangeListener(
-                    lostfound: LostFoundsItemResponse,
-                    isCompleted: Boolean
+                    todo: LostFoundsItemResponse,
+                    isChecked: Boolean
                 ) {
                     adapter.filter(binding.svMain.query.toString())
 
-                    viewModel.putLostFound(
-                        lostfound.id,
-                        lostfound.title,
-                        lostfound.description,
-                        lostfound.status,
-                        isCompleted
+                    viewModel.putTodo(
+                        todo.id,
+                        todo.title,
+                        todo.description,
+                        todo.status,
+                        isChecked
                     ).observeOnce {
                         when (it) {
                             is MyResult.Error -> {
-                                if (isCompleted) {
+                                if (isChecked) {
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "Gagal menyelesaikan lostfound: " + lostfound.title,
+                                        "Gagal menyelesaikan todo: " + todo.title,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "Gagal batal menyelesaikan lostfound: " + lostfound.title,
+                                        "Gagal batal menyelesaikan todo: " + todo.title,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
                             }
 
-                            is MyResult.Success -> {
-                                if (isCompleted) {
+                            is MyResult.Success<*> -> {
+                                if (isChecked) {
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "Berhasil menyelesaikan lostfound: " + lostfound.title,
+                                        "Berhasil menyelesaikan todo: " + todo.title,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "Berhasil batal menyelesaikan lostfound: " + lostfound.title,
+                                        "Berhasil batal menyelesaikan todo: " + todo.title,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -248,12 +249,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onClickDetailListener(lostfoundId: Int) {
+                override fun onClickDetailListener(todoId: Int) {
                     val intent = Intent(
                         this@MainActivity,
                         LostFoundDetailActivity::class.java
                     )
-                    intent.putExtra(LostFoundDetailActivity.KEY_LOST_FOUND_ID, lostfoundId)
+                    intent.putExtra(LostFoundDetailActivity.KEY_TODO_ID, todoId)
                     launcher.launch(intent)
                 }
             })
@@ -266,10 +267,11 @@ class MainActivity : AppCompatActivity() {
 
                     override fun onQueryTextChange(newText: String): Boolean {
                         adapter.filter(newText)
-                        binding.rvMainLostFounds.layoutManager?.scrollToPosition(0)
+                        binding.rvMainTodos.layoutManager?.scrollToPosition(0)
                         return true
                     }
-                })
+                }
+            )
         }
     }
 
@@ -287,7 +289,7 @@ class MainActivity : AppCompatActivity() {
         binding.svMain.visibility =
             if (status) View.VISIBLE else View.GONE
 
-        binding.rvMainLostFounds.visibility =
+        binding.rvMainTodos.visibility =
             if (status) View.VISIBLE else View.GONE
     }
 

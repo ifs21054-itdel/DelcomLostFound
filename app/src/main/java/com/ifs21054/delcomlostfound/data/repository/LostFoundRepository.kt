@@ -1,8 +1,6 @@
 // LostFoundRepository.kt
 package com.ifs21054.delcomlostfound.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
 import com.ifs21054.delcomlostfound.data.remote.MyResult
 import com.ifs21054.delcomlostfound.data.remote.response.DelcomResponse
@@ -11,13 +9,14 @@ import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import retrofit2.HttpException
 
+
 class LostFoundRepository private constructor(
     private val apiService: IApiService,
 ) {
     fun postLostFound(
         title: String,
         description: String,
-        status: String
+        status: String,
     ) = flow {
         emit(MyResult.Loading)
         try {
@@ -40,13 +39,12 @@ class LostFoundRepository private constructor(
         }
     }
 
-
     fun putLostFound(
-        lostandfoundId: Int,
+        lostFoundId: Int,
         title: String,
         description: String,
         status: String,
-        is_completed: Boolean,
+        isCompleted: Boolean,
     ) = flow {
         emit(MyResult.Loading)
         try {
@@ -54,11 +52,11 @@ class LostFoundRepository private constructor(
             emit(
                 MyResult.Success(
                     apiService.putLostFound(
-                        lostandfoundId,
+                        lostFoundId,
                         title,
                         description,
                         status,
-                        if (is_completed) 1 else 0
+                        if (isCompleted) 1 else 0
                     )
                 )
             )
@@ -75,7 +73,7 @@ class LostFoundRepository private constructor(
         }
     }
 
-    fun getLostFounds(
+    fun getAll(
         isCompleted: Int?,
         isMe: Int?,
         status: String?,
@@ -83,11 +81,7 @@ class LostFoundRepository private constructor(
         emit(MyResult.Loading)
         try {
             //get success message
-            emit(
-                MyResult.Success(
-                    apiService.getLostFounds(isCompleted, isMe, status)
-                )
-            )
+            emit(MyResult.Success(apiService.getAll(isCompleted, isMe, status)))
         } catch (e: HttpException) {
             //get error message
             val jsonInString = e.response()?.errorBody()?.string()
@@ -101,17 +95,13 @@ class LostFoundRepository private constructor(
         }
     }
 
-    fun getLostFound(
-        lostfoundId: Int,
+    fun getDetail(
+        lostFoundId: Int,
     ) = flow {
         emit(MyResult.Loading)
         try {
             //get success message
-            emit(
-                MyResult.Success(
-                    apiService.getLostFound(lostfoundId)
-                )
-            )
+            emit(MyResult.Success(apiService.getDetail(lostFoundId)))
         } catch (e: HttpException) {
             //get error message
             val jsonInString = e.response()?.errorBody()?.string()
@@ -125,18 +115,34 @@ class LostFoundRepository private constructor(
         }
     }
 
-
-    fun deleteLostFound(
-        lostfoundId: Int,
+    fun delete(
+        lostFoundId: Int,
     ) = flow {
         emit(MyResult.Loading)
         try {
             //get success message
+            emit(MyResult.Success(apiService.delete(lostFoundId)))
+        } catch (e: HttpException) {
+            //get error message
+            val jsonInString = e.response()?.errorBody()?.string()
             emit(
-                MyResult.Success(
-                    apiService.deleteLostFound(lostfoundId)
+                MyResult.Error(
+                    Gson()
+                        .fromJson(jsonInString, DelcomResponse::class.java)
+                        .message
                 )
             )
+        }
+    }
+
+    fun addCoverLostFound(
+        lostFoundId : Int,
+        cover: MultipartBody.Part,
+    ) = flow {
+        emit(MyResult.Loading)
+        try {
+            //get success message
+            emit(MyResult.Success(apiService.addCoverLostFound(lostFoundId, cover)))
         } catch (e: HttpException) {
             //get error message
             val jsonInString = e.response()?.errorBody()?.string()

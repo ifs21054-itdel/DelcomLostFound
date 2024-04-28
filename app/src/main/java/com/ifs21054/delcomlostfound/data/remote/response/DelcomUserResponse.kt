@@ -29,7 +29,7 @@ data class UserResponse(
 	val name: String,
 
 	@field:SerializedName("photo")
-	val photo: String,
+	val photo: String ?,
 
 	@field:SerializedName("created_at")
 	val createdAt: String,
@@ -43,5 +43,3 @@ data class UserResponse(
 	@field:SerializedName("email")
 	val email: String
 )
-
-

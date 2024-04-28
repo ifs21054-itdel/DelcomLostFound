@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.ifs21054.delcomlostfound.data.local.entity.DelcomLostFoundEntity
 import com.ifs21054.delcomlostfound.data.remote.MyResult
-import com.ifs21054.delcomlostfound.data.remote.response.AuthorLostFoundsResponse
 import com.ifs21054.delcomlostfound.data.remote.response.LostFoundsItemResponse
 
 class Utils {
@@ -13,34 +12,35 @@ class Utils {
             val observerWrapper = object : Observer<T> {
                 override fun onChanged(value: T) {
                     observer(value)
-                    if (value is MyResult.Success<*> ||
-                        value is MyResult.Error
-                    ) {
+                    if (value is MyResult.Success<*> || value is MyResult.Error) {
                         removeObserver(this)
                     }
                 }
             }
             observeForever(observerWrapper)
         }
-        fun entitiesToResponses(entities: List<DelcomLostFoundEntity>): List<LostFoundsItemResponse> {
-            return entities.map {
-                LostFoundsItemResponse(
-                    cover = it.cover ?: "", // Jika cover bisa null, tambahkan handling null
+
+        fun entitiesToResponses(entities: List<DelcomLostFoundEntity>):
+                List<LostFoundsItemResponse> {
+            val responses = ArrayList<LostFoundsItemResponse>()
+            entities.map {
+                val response = LostFoundsItemResponse(
+                    cover = it.cover,
                     updatedAt = it.updatedAt,
-                    userId = it.userId, // Sesuaikan dengan kebutuhan Anda, karena tidak ada field yang cocok di DelcomLostFoundEntity
-                    author = AuthorLostFoundsResponse(
-                        name = "Unknown",
-                        photo = ""
-                    ),
                     description = it.description,
                     createdAt = it.createdAt,
                     id = it.id,
                     title = it.title,
                     isCompleted = it.isCompleted,
+                    isMe = 1,
                     status = it.status
                 )
+                responses.add(response)
             }
+            return responses
         }
-
     }
 }
+
+
+

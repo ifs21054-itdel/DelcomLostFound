@@ -21,6 +21,7 @@ class LoginViewModel(
     suspend fun saveSession(user: UserModel): LiveData<UserModel> {
         return authRepository.saveSession(user).asLiveData()
     }
+
     companion object {
         @Volatile
         private var INSTANCE: LoginViewModel? = null

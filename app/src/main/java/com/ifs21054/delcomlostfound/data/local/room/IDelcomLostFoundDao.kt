@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.ifs21054.delcomlostfound.data.local.entity.DelcomLostFoundEntity
 
+
 @Dao
 interface IDelcomLostFoundDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

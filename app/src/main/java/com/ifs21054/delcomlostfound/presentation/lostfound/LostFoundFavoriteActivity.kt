@@ -1,13 +1,13 @@
 package com.ifs21054.delcomlostfound.presentation.lostfound
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +16,13 @@ import com.ifs21054.delcomlostfound.adapter.LostFoundsAdapter
 import com.ifs21054.delcomlostfound.data.local.entity.DelcomLostFoundEntity
 import com.ifs21054.delcomlostfound.data.remote.MyResult
 import com.ifs21054.delcomlostfound.data.remote.response.LostFoundsItemResponse
-import com.ifs21054.delcomlostfound.databinding.ActivityLostFoundFavoriteBinding
+import com.ifs21054.delcomlostfound.databinding.ActivityLostfoundFavoriteBinding
 import com.ifs21054.delcomlostfound.helper.Utils.Companion.entitiesToResponses
 import com.ifs21054.delcomlostfound.helper.Utils.Companion.observeOnce
 import com.ifs21054.delcomlostfound.presentation.ViewModelFactory
 
 class LostFoundFavoriteActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLostFoundFavoriteBinding
+    private lateinit var binding: ActivityLostfoundFavoriteBinding
     private val viewModel by viewModels<LostFoundViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -41,15 +41,13 @@ class LostFoundFavoriteActivity : AppCompatActivity() {
             }
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLostFoundFavoriteBinding.inflate(layoutInflater)
+        binding = ActivityLostfoundFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
         setupAction()
     }
-
     private fun setupAction() {
         binding.appbarLostFoundFavorite.setNavigationOnClickListener {
             val resultIntent = Intent()
@@ -101,14 +99,13 @@ class LostFoundFavoriteActivity : AppCompatActivity() {
                             id = lostfound.id,
                             title = lostfound.title,
                             description = lostfound.description,
-                            isCompleted = lostfound.isCompleted, // Sesuaikan dengan isCompleted
                             cover = lostfound.cover,
                             createdAt = lostfound.createdAt,
                             updatedAt = lostfound.updatedAt,
-                            status = "", // Sesuaikan dengan nilai default untuk status
-                            userId = 0 // Sesuaikan dengan nilai default untuk userId
+                            isCompleted = lostfound.isCompleted,
+                            status = lostfound.status,
+                            isMe = lostfound.isMe
                         )
-
                         viewModel.putLostFound(
                             lostfound.id,
                             lostfound.title,
@@ -121,13 +118,13 @@ class LostFoundFavoriteActivity : AppCompatActivity() {
                                     if (isChecked) {
                                         Toast.makeText(
                                             this@LostFoundFavoriteActivity,
-                                            "Gagal menyelesaikan LostFound: " + lostfound.title,
+                                            "Gagal menyelesaikan lostfound: " + lostfound.title,
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     } else {
                                         Toast.makeText(
                                             this@LostFoundFavoriteActivity,
-                                            "Gagal batal menyelesaikan LostFound: " + lostfound.title,
+                                            "Gagal batal menyelesaikan lostfound: " + lostfound.title,
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
@@ -146,7 +143,7 @@ class LostFoundFavoriteActivity : AppCompatActivity() {
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
-                                    viewModel.insertLocalLostFound(newLostFound)
+                                    viewModel.insertLocalTodo(newLostFound)
                                 }
                                 else -> {}
                             }
@@ -157,7 +154,7 @@ class LostFoundFavoriteActivity : AppCompatActivity() {
                             this@LostFoundFavoriteActivity,
                             LostFoundDetailActivity::class.java
                         )
-                        intent.putExtra(LostFoundDetailActivity.KEY_LOST_FOUND_ID, lostfoundId)
+                        intent.putExtra(LostFoundDetailActivity.KEY_TODO_ID, lostfoundId)
                         launcher.launch(intent)
                     }
                 })
@@ -191,5 +188,4 @@ class LostFoundFavoriteActivity : AppCompatActivity() {
         binding.pbLostFoundFavorite.visibility =
             if (isLoading) View.VISIBLE else View.GONE
     }
-
 }

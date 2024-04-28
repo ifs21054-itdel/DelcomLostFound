@@ -17,8 +17,8 @@ import com.ifs21054.delcomlostfound.presentation.register.RegisterViewModel
 class ViewModelFactory(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val lostfoundRepository: LostFoundRepository,
-    private val localLostFoundRepository: LocalLostFoundRepository
+    private val lostFoundRepository: LostFoundRepository,
+    private val LocalLostFoundRepository: LocalLostFoundRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -37,7 +37,7 @@ class ViewModelFactory(
 
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel
-                    .getInstance(authRepository, lostfoundRepository) as T
+                    .getInstance(authRepository, lostFoundRepository) as T
             }
 
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
@@ -47,7 +47,7 @@ class ViewModelFactory(
 
             modelClass.isAssignableFrom(LostFoundViewModel::class.java) -> {
                 LostFoundViewModel
-                    .getInstance(lostfoundRepository, localLostFoundRepository) as T
+                    .getInstance(lostFoundRepository, LocalLostFoundRepository) as T
             }
 
             else -> throw IllegalArgumentException(
