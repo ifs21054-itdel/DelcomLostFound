@@ -63,13 +63,10 @@ class LostFoundsAdapter :
                 tvItemLostFoundTitle.text = data.title
                 cbItemLostFoundIsFinished.isChecked = data.isCompleted == 1
                 val statusText = if (data.status.equals("found", ignoreCase = true)) {
-                    // Jika status "found", maka gunakan warna hijau
                     highlightText("Found", Color.GREEN)
                 } else {
-                    // Jika status "lost", maka gunakan warna kuning
-                    highlightText("Lost", Color.YELLOW)
+                    highlightText("Lost", Color.RED)
                 }
-                // Menetapkan teks status yang sudah disorot ke TextView
                 tvStatus.text = statusText
                 data.cover?.let { coverUrl ->
                     Glide.with(itemView)

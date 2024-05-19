@@ -16,20 +16,22 @@
         android:theme="@style/Theme.DelcomLostFound"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.lostfound.LostFoundFavoriteActivity"
+            android:name=".SplashScreenctivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.profile.ProfileManageActivity"
             android:exported="false" />
-
         <activity
-            android:name=".presentation.lostfound.LostFoundManageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.lostfound.LostFoundDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.profile.ProfileActivity"
+            android:name=".presentation.lostfound.LostFoundFavoriteActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.register.RegisterActivity"
@@ -37,6 +39,13 @@
         <activity
             android:name=".presentation.login.LoginActivity"
             android:exported="false" />
+        <activity
+            android:name=".presentation.lostfound.LostFoundDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.lostfound.LostFoundManageActivity"
+            android:exported="false" />
+
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="true">

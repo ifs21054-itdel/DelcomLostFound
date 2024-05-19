@@ -9,7 +9,7 @@
     tools:context=".presentation.lostfound.LostFoundManageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarLayoutLostFoundManage"
+        android:id="@+id/appbarLayoutTodoManage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:visibility="visible">
@@ -21,7 +21,7 @@
             android:background="@color/ungu"
             app:navigationIcon="@drawable/ic_arrow_back_24"
             app:navigationIconTint="@color/white"
-            app:title="Tambah Item Lost and Found"
+            app:title="Tambah Item"
             app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -93,7 +93,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etLostFoundManageDesc"
-                app:srcCompat="@drawable/noimage" />
+                app:srcCompat="@drawable/ic_image_24" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -142,27 +142,31 @@
 
             <Button
                 android:id="@+id/btnLostFoundManageCamera"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_width="150dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="4dp"
                 android:text="Kamera"
                 android:backgroundTint="@color/ungu"
-                app:cornerRadius="2pt"
+                app:cornerRadius="2dp"
                 app:layout_constraintEnd_toStartOf="@+id/btnLostFoundManageGallery"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivLostFoundManageCover" />
 
             <Button
                 android:id="@+id/btnLostFoundManageGallery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Galeri"
+                android:layout_width="150dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="4dp"
+                android:text="Pilih dari Galeri"
                 android:backgroundTint="@color/ungu"
-                app:cornerRadius="2pt"
+                app:cornerRadius="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnLostFoundManageCamera"
                 app:layout_constraintTop_toBottomOf="@+id/ivLostFoundManageCover" />
+
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

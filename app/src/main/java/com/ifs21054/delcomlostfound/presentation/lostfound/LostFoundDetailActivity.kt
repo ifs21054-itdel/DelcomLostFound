@@ -281,7 +281,7 @@ class LostFoundDetailActivity : AppCompatActivity() {
         isFavorite = status
         if(status){
             binding.ivLostFoundDetailActionFavorite
-                .setImageResource(R.drawable.baseline_favorite_24)
+                .setImageResource(R.drawable.baseline_favorite_ungu_24)
         }else{
             binding.ivLostFoundDetailActionFavorite
                 .setImageResource(R.drawable.baseline_favorite_border_24)

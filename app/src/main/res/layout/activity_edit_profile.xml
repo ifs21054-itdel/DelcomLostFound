@@ -21,7 +21,7 @@
             android:background="@color/ungu"
             app:navigationIcon="@drawable/ic_arrow_back_24"
             app:navigationIconTint="@color/white"
-            app:title="Edit Profile"
+            app:title="Tambah Todo"
             app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -74,11 +74,11 @@
 
             <Button
                 android:id="@+id/btnCamera"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="149dp"
+                android:layout_height="47dp"
                 android:layout_marginTop="8dp"
-                android:text="Kamera"
                 android:backgroundTint="@color/ungu"
+                android:text="Kamera"
                 app:cornerRadius="2pt"
                 app:layout_constraintEnd_toStartOf="@+id/btnGallery"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,11 +86,11 @@
 
             <Button
                 android:id="@+id/btnGallery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="149dp"
+                android:layout_height="47dp"
                 android:layout_marginTop="8dp"
-                android:text="Galeri"
                 android:backgroundTint="@color/ungu"
+                android:text="Pilih dari Galeri"
                 app:cornerRadius="2pt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnCamera"

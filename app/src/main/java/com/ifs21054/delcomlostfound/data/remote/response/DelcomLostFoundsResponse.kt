@@ -46,3 +46,26 @@ data class DataLostFoundsResponse(
 	@field:SerializedName("lost_founds")
 	val lostfounds: List<LostFoundsItemResponse>
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
